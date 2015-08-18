@@ -1,0 +1,59 @@
+<div id="main_info">
+    <div id="greetings">
+        <p>
+            <b>
+                Приветствуем Вас на сайте сверки нашего интернет-магазина!
+            </b>
+        </p>
+        <p>
+            <b>
+                Для начала работы сделайте следующее:
+            </b>
+        </p>
+        <ol>            
+            <li>Выберите начало и конец периода сверки ( по умолчанию 7 последних дней);</li>
+            <li>Выберите договор для сверки ( по умолчанию загрузится информация по всем договорам);</li>
+            <li>Нажмите на необходимый вид документа.</li>
+        </ol>
+        <p>
+            <b>
+                По окончанию работы, в целях информационной безопасности Вашего бизнеса,  не забудьте выйти с аккаунта!
+            </b>
+        </p>
+    </div>
+</div>
+
+<div class="main_menu">
+    <div class="pickdata">
+        <p><b>Период сверки </b>(год-месяц-дата)</p>
+        <p><b>
+                с :</br>
+                <input class="form-control form-data" type="text" id="datestart">
+            </b></p>
+        <p><b>
+                до :</br>
+                <input class="form-control form-data" type="text" id="dateend">
+            </b></p>
+    </div>
+
+    <div class="contract_num">
+        <label for="contract">Выберите договор :</label></br>
+        <select name="contract" id="contract">
+            <option selected="selected" value="">Все Договора</option>
+            <?php if (is_array($this->listofcontr)): ?>
+                <?php foreach ($this->listofcontr as $val): ?>
+                    <option value="<?php echo $val->ID ?>"><?php echo $val->Name ?></option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+    </div>
+    <div class="menu">
+        <a id="in" href="#"><button class="btn btn-info" onclick="ajx1C('receipts')">Поступления</button></a>
+        <a id="out" href="#"><button class="btn btn-info" onclick="ajx1C('returns')">Возвраты</button></a>
+        <?php if ($this->sverka == '1'): ?>
+            <a id="lookup" href="#"><button class="btn btn-success" onclick="ajx1C('trade')">Взаиморасчеты</button></a>
+        <?php else : ?>
+            <a id="lookup" href="#"><button class="btn btn-default" disabled><span class="text-muted">Взаиморасчеты</span></button></a>
+        <?php endif ?>
+    </div>
+</div>

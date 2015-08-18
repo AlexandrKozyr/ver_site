@@ -1,0 +1,81 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Mobilluck Verification Site v2 ') ?>
+
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <?php
+        echo $this->headLink(array('rel' => 'icon', 'href' => $this->basePath('img/favicon.ico')))
+                ->appendStylesheet($this->basePath('css/bootstrap.min.css'))
+                ->appendStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->appendStylesheet($this->basePath('css/jquery-ui.min.css'))
+                ->appendStylesheet($this->basePath('css/jquery-ui.structure.min.css'))
+                ->appendStylesheet($this->basePath('css/jquery-ui.theme.min.css'))
+                ->appendStylesheet($this->basePath('css/style.css'))
+        ?>
+
+        <!-- Scripts -->
+
+        <?php
+        echo $this->headScript()
+                ->prependFile($this->basePath('js/main.js'))
+                ->prependFile($this->basePath('js/bootstrap.min.js'))
+                ->prependFile($this->basePath('js/jquery-ui.min.js'))
+                ->prependFile($this->basePath('js/jquery.min.js'))
+                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('js/html5shiv.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+        ;
+        ?>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/mob-logo.png') ?>" alt="Mobilluck Verification Site v2"/> Mobilluck Verification Site v2</a>
+                </div>
+                <?php if ($this->UserAuth): ?>
+                    <div class="auth_info">
+                        <div id="main_page_name">
+                            <p><b>Добрый день,</br> <?php echo $this->UserName ?> !</b></p>
+                        </div>
+                        <div id="logout">
+                            <a href="/customers/login/out"><button class="btn btn-primary"> Выйти</button></a>
+                        </div>
+                    </div>
+                <?php endif ?>
+            </div>
+        </nav>
+        <div>
+            <?php echo $this->content; ?>
+        </div>
+        <footer class="footer">
+            <?php if ($this->UserAuth): ?>
+                <div class="cont_footer">
+                    <ul>
+                        <li>
+                            <b>Ваш менеджер:</b> Петров Петрови Петрович ( тел. - 0502052051, 057663322; email - exapmple.com; skype - petrov_petrov);
+                        </li>
+                        <li>
+                            <b>Ваш консультант:</b> Петров Петрови Петрович ( тел. - 0502052051, 057663322; email - exapmple.com; skype - petrov_petrov);
+                        </li>
+                    </ul>
+
+                </div>
+            <?php endif ?>
+            <div class="mobi_footer">
+                <p class="text-muted">
+                    &copy; 2014 - <?php echo date('Y') ?> Mobilluck. <?php echo $this->translate('All rights reserved.') ?>
+                </p>
+            </div>
+        </footer>
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

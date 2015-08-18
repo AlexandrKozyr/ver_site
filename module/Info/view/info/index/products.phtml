@@ -1,0 +1,50 @@
+<?php if (isset($products)): ?>
+    <div class='p_cont th doc_info prod_top' >
+        <div class="col1">Товар</div>
+        <div class="col2"><div class="sub1col2">К-во</div> <div class="sub2col2">Цена</div></div> 
+        <?php if ($debit == '0,00'): ?>
+            <div class="col3">&nbsp;</div> 
+            <div class="col4">Всего :</div> 
+        <?php else: ?>
+            <div class="col3">Всего :</div> 
+            <div class="col4">&nbsp;</div> 
+        <?php endif ?>
+        <div class="col5">
+            <?php if ($declar == '1'): ?>
+                № Декларации
+            <?php else: ?>
+                &nbsp;
+            <?php endif ?>
+        </div> 
+    </div>
+    <?php foreach ($products as $prod): ?>
+        <div class='p_cont doc_info prod_bot'>
+            <div class="col1 small">
+
+                <span class="showplus">&nbsp;</span>
+                <span class="showspan">*</span>
+
+                <?php echo $prod->Product; ?>
+            </div>
+            <div class="col2 acenter"><div class="sub1col2"><?php echo $prod->Quantity; ?></div> <div class="sub2col2"><?php echo $prod->Price; ?></div></div> 
+            <?php if ($debit == '0,00'): ?>
+                <div class="col3 acenter">&nbsp;</div> 
+                <div class="col4 acenter"><?php echo $prod->Cost; ?></div>
+            <?php else: ?>
+                <div class="col3 acenter"><?php echo $prod->Cost; ?></div> 
+                <div class="col4 acenter">&nbsp;</div>
+            <?php endif ?>
+            <div class="col5 acenter">
+                <?php if ($declar == '1'): ?>
+                    <?php if (isset($prod->Declaration)): ?>
+                        <?php echo $prod->Declaration ?>
+                    <?php else: ?>
+                        декларация не найдена
+                    <?php endif ?>
+                <?php else: ?>
+                    &nbsp;
+                <?php endif ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    <?php endif ?>
