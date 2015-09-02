@@ -1,14 +1,14 @@
 
 $(function () {
     $("#datestart").datepicker({
-        minDate: "-2Y",
+        minDate: "-3M",
         maxDate: "-1D",
-        defaultDate: "-7d",
+        defaultDate: "-3M",
         dateFormat: 'yy-mm-dd'});
-    $("#datestart").datepicker("setDate", "-2Y");
+    $("#datestart").datepicker("setDate", "-3M");
 
     $("#dateend").datepicker({
-        minDate: "-2Y",
+        minDate: "-3M",
         maxDate: "-0D",
         defaultDate: null,
         dateFormat: 'yy-mm-dd'});
@@ -19,18 +19,25 @@ $(function () {
             .selectmenu()
             .selectmenu("menuWidget")
             .addClass("overflow");
+
+
 });
 
-function getProducts(docId, tag, debCred, declar) {
+function spinToggle() {
+    $('.cload_show').toggle();
+}
 
+function getProducts(docId, tag, debCred, declar) {
+    spinToggle();
     $.ajax({
         type: "POST",
         url: "/info/index/products",
-        data: 'DocumentID=' + docId + '&Debit=' + debCred + '&Declar='+declar ,
+        data: 'DocumentID=' + docId + '&Debit=' + debCred + '&Declar=' + declar,
         dataType: "text",
         success: function (data) {
             tag.html("");
             tag.html(data);
+            spinToggle();
         }
     });
 }
@@ -51,6 +58,7 @@ function ajx1C(mode)
         switch (mode)
         {
             case "trade":
+                spinToggle();
                 $.ajax({
                     type: "POST",
                     url: "/info/index/trade",
@@ -60,62 +68,47 @@ function ajx1C(mode)
 
                         $("#main_info").html("");
                         $("#main_info").html(data);
+                        spinToggle();
                     }
                 });
                 break;
-            case "returns":
-                $(".btn_choose a img").css("cursor", "no-drop");
 
-                if (value == 0) {
-                    $("#cssmenu").html("");
-                    $("#carType").empty();
-                    $("#carType").append($('<option value="0">Выберите модификацию</option>'));
-                    $("#carType").prev().remove();
-                    $("#carType").selectbox();
-                    $("#cssmenu").css("visibility", "hidden");
-                }
-
+            case "receipts":
+                spinToggle();
                 $.ajax({
                     type: "POST",
-                    url: "/td_trans/index.php",
-                    data: 'ajax=2&modelId=' + value,
-                    dataType: "json",
+                    url: "/info/index/receipts",
+                    data: 'DateBegin=' + dateStart + '&DataEnd=' + dateEnd + '&ContractId=' + contractId,
+                    dataType: "text",
                     success: function (data) {
 
-                        $("#carType").empty();
-                        $("#carType").append($('<option value="0">Выберите модификацию</option>'));
-                        for (var i = 0; i < data.length; i++)
-                        {
-                            $("#carType").append($('<option value="' + data[i][0] + '">' + data[i][1] + '</option>'));
-                        }
-                        $("#carType").prev().remove();
-                        $("#carType").selectbox();
-                        $("#cssmenu").html("");
-                        $("#cssmenu").css("visibility", "hidden");
+                        $("#main_info").html("");
+                        $("#main_info").html(data);
+                        spinToggle();
                     }
                 });
                 break;
 
-            case "trade":
-                if (value != 0) {
-                    $(".btn_choose a img").css("cursor", "pointer");
-                } else {
-                    $(".btn_choose a img").css("cursor", "no-drop");
-                }
-                $("#cssmenu").html("");
-                $("#cssmenu").css("visibility", "hidden");
+            case "returns":
+                spinToggle();
+                $.ajax({
+                    type: "POST",
+                    url: "/info/index/returns",
+                    data: 'DateBegin=' + dateStart + '&DataEnd=' + dateEnd + '&ContractId=' + contractId,
+                    dataType: "text",
+                    success: function (data) {
+
+                        $("#main_info").html("");
+                        $("#main_info").html(data);
+                        spinToggle();
+                    }
+                });
                 break;
 
-            case "product":
-                if (value != 0) {
-                    $(".btn_choose a img").css("cursor", "pointer");
-                } else {
-                    $(".btn_choose a img").css("cursor", "no-drop");
-                }
-                $("#cssmenu").html("");
-                $("#cssmenu").css("visibility", "hidden");
-                break;
+
         }
+
+
     }
 
 

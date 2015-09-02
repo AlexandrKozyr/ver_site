@@ -48,6 +48,12 @@
         </select>
     </div>
     <div class="menu">
+        <div class="cload_show">
+            <div class="load_block">
+                <div id="outer_circle"></div>            
+                <div class="inner_circle"></div>
+            </div>  
+        </div>
         <a id="in" href="#"><button class="btn btn-info" onclick="ajx1C('receipts')">Поступления</button></a>
         <a id="out" href="#"><button class="btn btn-info" onclick="ajx1C('returns')">Возвраты</button></a>
         <?php if ($this->sverka == '1'): ?>
@@ -55,5 +61,8 @@
         <?php else : ?>
             <a id="lookup" href="#"><button class="btn btn-default" disabled><span class="text-muted">Взаиморасчеты</span></button></a>
         <?php endif ?>
+
     </div>
+
 </div>
+

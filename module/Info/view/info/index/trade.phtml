@@ -1,4 +1,5 @@
 <div id="trade">
+    <div id="pagetitle">Взаиморасчеты</div>
     <?php foreach ($trade as $ti => $item): ?>
     <div id="firstdiv" class='contract_info' declar="<?php echo $item->WithDeclaration?>">   
             <div class='p_cont th'>
@@ -77,7 +78,7 @@
     $(".showdate").click(function () {
         var ti = $(this).attr("ti");
 
-        $(this).parent().parent().children("div[ti=" + ti + "]").toggle("slow");
+        $(this).parent().parent().children("div[ti=" + ti + "]").toggle(300);
         if ($(this).html() == "+") {
             $(this).html("-");
         } else {
@@ -86,7 +87,7 @@
     });
     $(".showdoc").click(function () {
         var dt = $(this).attr("dt");
-        $(this).parent().parent().children("div[dt=" + dt + "]").toggle("slow");
+        $(this).parent().parent().children("div[dt=" + dt + "]").toggle(300);
         if ($(this).html() == "+")
             $(this).html("-");
         else
@@ -98,17 +99,17 @@
         var docId = $(this).attr("value");
 
         if ($(this).hasClass('downloaded')) {
-            $(this).parent().parent().children("div[dc=" + dc + "]").toggle("slow");
+            $(this).parent().parent().children("div[dc=" + dc + "]").toggle(300);
         } else {
-           
+
             var debit = $(this).parent().parent().children("div.col3").text();
             var declar = $('#firstdiv').attr("declar");
             var tag = $(this).parent().parent().children("div[dc=" + dc + "]");
-            
+
             getProducts(docId, tag, debit, declar);
 
             $(this).addClass('downloaded');
-            $(this).parent().parent().children("div[dc=" + dc + "]").toggle("slow");
+            $(this).parent().parent().children("div[dc=" + dc + "]").toggle(300);
         }
 
         if ($(this).html() == "+")

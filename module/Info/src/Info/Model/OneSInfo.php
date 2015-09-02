@@ -71,7 +71,7 @@ class OneSInfo {
      * client(if $contractId isn't set)
      */
     public function getReceiptsOfProducts($id_1c, $startDate, $endDate, $contractId = "") {
-        return $this->client->GetReturnsOfProducts(array(
+        return $this->client->GetReceiptsOfProducts(array(
                     'IDSuppliers' => (string) $id_1c,
                     'IDContract'  => (string) $contractId,
                     'DateBegin'   => (string) $startDate,
@@ -105,7 +105,7 @@ class OneSInfo {
     public function getProductsFromDocument($id_1c, $documentId) {
         return $this->client->GetProductsFromDocument(array(
                     'IDSuppliers' => (string) $id_1c,
-                    'IDDocument'  => (string) $documentId));
+                    'IDDocument'  => (string) stripslashes($documentId)));
     }
 
 }

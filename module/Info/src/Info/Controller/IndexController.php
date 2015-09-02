@@ -37,8 +37,6 @@ class IndexController extends AbstractActionController {
         return $view;
     }
 
- 
-
     public function tradeAction() {
         $customer    = $this->getServiceLocator()->get("CurrentCustomer");
         $this->id_1c = $customer->id_1c;
@@ -70,6 +68,7 @@ class IndexController extends AbstractActionController {
             die('ERROR: ' . $e->getMessage());
         }
     }
+
     public function receiptsAction() {
         $customer    = $this->getServiceLocator()->get("CurrentCustomer");
         $this->id_1c = $customer->id_1c;
@@ -77,30 +76,15 @@ class IndexController extends AbstractActionController {
         $start     = $this->getRequest()->getPost('DateBegin');
         $end       = $this->getRequest()->getPost('DataEnd');
         $conractId = $this->getRequest()->getPost('ContractId');
-        
-        
-        $start     = '2014-04-01';
-        $end       = '2015-08-10';
-        $conractId = '';
-        
-        
-        
         try {
             $soapClient = $this->getServiceLocator()->get('SoapClient');
             $oneS       = new OneSInfo($soapClient);
-            $result     = $oneS->getReturnsOfProducts($this->id_1c, $start, $end, $conractId);
-            echo "<pre>";
-            var_dump( $result);
-            echo "</pre>";
-            die;
-            
-            $result     = $oneS->getTradeLiability($this->id_1c, $start, $end, $conractId);
-
+            $result     = $oneS->getReceiptsOfProducts($this->id_1c, $start, $end, $conractId);
             if (isset($result->return->Row)) {
-                $trade = $this->makeArrayContracts($result->return->Row);
-                $view  = new ViewModel(array(
-                    'trade' => $trade,));
-                $view->setTemplate('info/index/trade');
+                $receipts = $this->makeArrayContractsRR($result->return->Row);
+                $view     = new ViewModel(array(
+                    'receipts' => $receipts,));
+                $view->setTemplate('info/index/receipts');
                 $view->setTerminal(true);
                 return $view;
             } else {
@@ -115,8 +99,38 @@ class IndexController extends AbstractActionController {
             die('ERROR: ' . $e->getMessage());
         }
     }
+
     public function returnsAction() {
-        
+        $customer    = $this->getServiceLocator()->get("CurrentCustomer");
+        $this->id_1c = $customer->id_1c;
+
+        $start     = $this->getRequest()->getPost('DateBegin');
+        $end       = $this->getRequest()->getPost('DataEnd');
+        $conractId = $this->getRequest()->getPost('ContractId');
+        try {
+            $soapClient = $this->getServiceLocator()->get('SoapClient');
+            $oneS       = new OneSInfo($soapClient);
+            $result     = $oneS->getReturnsOfProducts($this->id_1c, $start, $end, $conractId);
+
+
+            if (isset($result->return->Row)) {
+                $returns = $this->makeArrayContractsRR($result->return->Row);
+                $view     = new ViewModel(array(
+                    'returns' => $returns,));
+                $view->setTemplate('info/index/returns');
+                $view->setTerminal(true);
+                return $view;
+            } else {
+                $view = new ViewModel();
+                $view->setTemplate('info/index/noresult');
+                $view->setTerminal(true);
+                return $view;
+            }
+        } catch (SoapFault $s) {
+            die('ERROR: [' . $s->faultcode . '] ' . $s->faultstring);
+        } catch (Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
     }
 
     public function productsAction() {
@@ -124,19 +138,19 @@ class IndexController extends AbstractActionController {
         $this->id_1c = $customer->id_1c;
 
         $documentId = $this->getRequest()->getPost('DocumentID');
-        $debit = $this->getRequest()->getPost('Debit');
-        $declar = $this->getRequest()->getPost('Declar');
+        $debit      = $this->getRequest()->getPost('Debit');
+        $declar     = $this->getRequest()->getPost('Declar');
 
         try {
             $soapClient = $this->getServiceLocator()->get('SoapClient');
             $oneS       = new OneSInfo($soapClient);
             $result     = $oneS->getProductsFromDocument($this->id_1c, $documentId);
-            
-            $products   = $this->makeArray($result->return->Row);
-            $view = new ViewModel(array(
+
+            $products = $this->makeArray($result->return->Row);
+            $view     = new ViewModel(array(
                 'products' => $products,
-                'declar' => $declar,
-                'debit' => $debit,));
+                'declar'   => $declar,
+                'debit'    => $debit,));
             $view->setTemplate('info/index/products');
             $view->setTerminal(true);
             return $view;
@@ -241,6 +255,58 @@ class IndexController extends AbstractActionController {
                     $temp             = array();
                     $temp[]           = $value->Rows->Row;
                     $value->Rows->Row = $temp;
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * method checks is $result an object and if is not makes an array with it for returns and receipts
+     * @param object/array $result
+     * @return array $result
+     */
+    private function makeArrayContractsRR($result) {
+        if (is_object($result)) {
+            $temp   = array();
+            $temp[] = $result;
+            $result = $temp;
+        }
+
+        $result = $this->makeArrayDateRR($result);
+        $result = $this->makeArrayDocRR($result);
+
+        return $result;
+    }
+
+    /**
+     * method checks is $result an object and if is not makes an array with it for returns and receipts
+     * @param array $result
+     * @return array $result
+     */
+    private function makeArrayDateRR($result) {
+        foreach ($result as &$item) {
+            if (is_object($item->Row)) {
+                $temp      = array();
+                $temp[]    = $item->Row;
+                $item->Row = $temp;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * method checks is $result an object and if is not makes an array with it for returns and 
+     * @param array $result
+     * @return array $result
+     */
+    private function makeArrayDocRR($result) {
+        foreach ($result as &$item) {
+            foreach ($item->Row as &$value) {
+                if (is_object($value->Row)) {
+                    $temp       = array();
+                    $temp[]     = $value->Row;
+                    $value->Row = $temp;
                 }
             }
         }
