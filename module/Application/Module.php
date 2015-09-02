@@ -22,9 +22,7 @@ use Zend\Soap\Client;
 
 class Module {
 
-    protected $whitelist = array(
-        'Customers\Controller\Login'
-    );
+    
 
     public function onBootstrap(MvcEvent $e) {
         $eventManager        = $e->getApplication()->getEventManager();
@@ -44,8 +42,10 @@ class Module {
 
             $routeMatch = $e->getRouteMatch();
             $controller = $routeMatch->getParam('controller');
-
-            if (!in_array($controller, $this->whitelist)) {
+            $whitelist  = array(
+                'Customers\Controller\Login'
+            );
+            if (!in_array($controller, $whitelist)) {
                 if (!$auth->hasIdentity()) {
                     $e->getApplication()->getEventManager()->getSharedManager()->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
                         $controller = $e->getTarget();
@@ -113,14 +113,26 @@ class Module {
                     return $authService;
                 },
                 //служба клиента
-                'SoapClient' => function() {
+                'SoapClient2' => function() {
                     $wsdl       = "http://192.168.0.229/Mobilluck/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
                     $soapClient = new Client($wsdl, array('login'    => 'site',
                         'password' => 'site'));
                     return $soapClient;
                 },
-                //объект текущего пользователя
-                'CurrentCustomer' => function($sm) {
+                'SoapClient2' => function() {
+                    $wsdl       = "http://192.168.0.229/Mobilluck/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
+                    $soapClient = new Client($wsdl, array('login'    => 'site',
+                        'password' => 'site'));
+                    return $soapClient;
+                },
+                        'SoapClient' => function() {
+                    $wsdl       = "http://217.12.219.215/ERVGroup/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
+                    $soapClient = new Client($wsdl, array('login'    => 'web',
+                        'password' => 'web1231980'));
+                    return $soapClient;
+                },
+                        //объект текущего пользователя
+                        'CurrentCustomer' => function($sm) {
                     $auth     = $sm->get("Auth_Service");
                     $customer = $auth->getStorage()->read();
                     return $customer;

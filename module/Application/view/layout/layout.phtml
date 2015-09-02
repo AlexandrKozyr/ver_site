@@ -44,7 +44,7 @@
                 <?php if ($this->UserAuth): ?>
                     <div class="auth_info">
                         <div id="main_page_name">
-                            <p><b>Добрый день,</br> <?php echo $this->UserName ?> !</b></p>
+                            <p><b>Добрый день,</br> <?php echo iconv_get_encoding($this->UserName) ?> !</b></p>
                         </div>
                         <div id="logout">
                             <a href="/customers/login/out"><button class="btn btn-primary"> Выйти</button></a>
