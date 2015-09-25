@@ -155,8 +155,6 @@ select {
     width: 140px;
 }
 
-
-
 .contract_info
 {
     border: 1px solid black;
@@ -165,62 +163,58 @@ select {
     font-size: 14px;    
 }
 
-table tbody tr, table thead tr
+.contract_info .p_cont
 {
     margin: 0;
+    line-height: 14px;
     padding: 0;
     border-bottom: 1px solid grey;
 }
-
-
-.contract_info .p_cont td, .contract_info .p_cont th
+.contract_info .p_cont:last-child
 {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+    border-bottom: none;
 }
-.col1
+.contract_info .p_cont div, .contract_info .p_cont td
 {
+    margin: 0;
+    border-right: 1px solid grey;
+    box-sizing: border-box;
+
+}
+.contract_info .p_cont .col1
+{
+    display: inline-block;
     box-sizing: border-box;
     width: 38%;
-    border-right: 1px solid grey;
 }
-.col2
+.contract_info .p_cont .col2
 {
+    display: inline-block;
     width: 18%;
-    border-right: 1px solid grey;
 }
-.col3
+.contract_info .p_cont .col3
 {
+    display: inline-block;
     width: 12%;
-    border-right: 1px solid grey;
 }
-.col4
+.contract_info .p_cont .col4
 {
-
+    display: inline-block;
     width: 12%;
-    border-right: 1px solid grey;
 }
-.col5
+.contract_info .p_cont .col5
 {
+    display: inline-block;
     width: 18%;
-    border-right: none !important;
-}
-.sub1col2{
-    width: 9%;
-    border-right: 1px solid grey;
-}
-.sub2col2{
-    width: 9%;
-    border-right: 1px solid grey;
+    border-right: none;
 }
 
-th
+.th div
 {
     font-weight: bold;
     text-align: center;
 }
-.td
+.tr div
 {
     font-weight: bold;
     text-align: center;
@@ -242,9 +236,15 @@ th
     width: 14px;
     text-align: center;
 }
+.sub1col2{
+    float:left;
+    width: 50%;
+}
+.sub2col2{
+    border-right: none !important; 
+}
 
-
-.contract_info .p_cont .hideblock 
+.contract_info .p_cont div.hideblock 
 {
     display: none;
     border-right: none!important;
@@ -253,12 +253,18 @@ th
 .green-line-top{
     background-color: aliceblue;
 }
-.date_info{
+div.date_info{
 
     border-right: none!important;
+
+
 }
-.doc_info{
+div.doc_info{
     border-right: none!important;
+}
+
+div.prod_bot{
+    border-bottom: 1px solid grey;
 }
 
 .hideblock {
@@ -294,11 +300,8 @@ th
     text-align: -webkit-center;
 }
 
-
 table{
     width:100%;
-    padding: 1px;
-    border: none;
 }
 
 

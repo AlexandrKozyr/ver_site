@@ -21,7 +21,50 @@ $(function () {
             .addClass("overflow");
 
 
+
+    $(".showdate").click(function () {
+        var ti = $(this).attr("ti");
+        $(this).parent().parent().children("div[ti=" + ti + "]").toggle(300);
+        if ($(this).html() == "+") {
+            $(this).html("-");
+        } else {
+            $(this).html("+");
+        }
+    });
+    $(".showdoc").click(function () {
+        var dt = $(this).attr("dt");
+        $(this).parent().parent().children("div[dt=" + dt + "]").toggle(300);
+        if ($(this).html() == "+")
+            $(this).html("-");
+        else
+            $(this).html("+");
+    });
+    $(".showprod").click(function () {
+
+        var dc = $(this).attr("dc");
+        var docId = $(this).attr("value");
+
+        if ($(this).hasClass('downloaded')) {
+            $(this).parent().parent().children("div[dc=" + dc + "]").toggle(300);
+        } else {
+
+            var debit = $(this).parent().parent().children("div.col3").text();
+            var declar = $('#firstdiv').attr("declar");
+            var tag = $(this).parent().parent().children("div[dc=" + dc + "]");
+
+            getProducts(docId, tag, debit, declar);
+
+            $(this).addClass('downloaded');
+            $(this).parent().parent().children("div[dc=" + dc + "]").toggle(300);
+        }
+
+        if ($(this).html() == "+")
+            $(this).html("-");
+        else
+            $(this).html("+");
+    });
 });
+
 
 function spinToggle() {
     $('.cload_show').toggle();
@@ -35,8 +78,8 @@ function getProducts(docId, tag, debCred, declar) {
         data: 'DocumentID=' + docId + '&Debit=' + debCred + '&Declar=' + declar,
         dataType: "text",
         success: function (data) {
-            tag.html("");
-            tag.html(data);
+            tag.find('td').html("");
+            tag.find('td').html(data);
             spinToggle();
         }
     });

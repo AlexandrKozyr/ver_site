@@ -113,26 +113,21 @@ class Module {
                     return $authService;
                 },
                 //служба клиента
+
                 'SoapClient2' => function() {
-                    $wsdl       = "http://192.168.0.229/Mobilluck/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
-                    $soapClient = new Client($wsdl, array('login'    => 'site',
-                        'password' => 'site'));
-                    return $soapClient;
-                },
-                'SoapClient2' => function() {
-                    $wsdl       = "http://192.168.0.229/Mobilluck/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
-                    $soapClient = new Client($wsdl, array('login'    => 'site',
-                        'password' => 'site'));
-                    return $soapClient;
-                },
-                        'SoapClient' => function() {
                     $wsdl       = "http://217.12.219.215/ERVGroup/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
                     $soapClient = new Client($wsdl, array('login'    => 'web',
                         'password' => 'web1231980'));
                     return $soapClient;
                 },
-                        //объект текущего пользователя
-                        'CurrentCustomer' => function($sm) {
+                'SoapClient' => function() {
+                    $wsdl       = "http://192.168.0.229/Mobilluck/ws/SiteOfReconciliationTradeLiability.1cws?wsdl";
+                    $soapClient = new Client($wsdl, array('login'    => 'site',
+                        'password' => 'site'));
+                    return $soapClient;
+                },
+                //объект текущего пользователя
+                'CurrentCustomer' => function($sm) {
                     $auth     = $sm->get("Auth_Service");
                     $customer = $auth->getStorage()->read();
                     return $customer;

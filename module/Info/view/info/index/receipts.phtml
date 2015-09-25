@@ -1,93 +1,111 @@
 <div id="trade">
     <div id="pagetitle">Поступления</div>
     <?php foreach ($receipts as $ti => $item): ?>
-        <div id="firstdiv" class='contract_info' declar="<?php echo $item->WithDeclaration ?>">   
-            <div class='p_cont th'>
-                <div class="col1">Договор</div>
-                <div class="col2">&nbsp;</div> 
-                <div class="col3">Сумма</div> 
-                <div class="col4">&nbsp;</div> 
-                <div class="col5">&nbsp;</div> 
-            </div>
-            <div class='p_cont'>                
-                <div class="col1 small">
-                    <span class="showplus showdate" ti="<?= $ti ?>">+</span>
-                    <?php echo $item->NameContract; ?>
-                </div>
-                <div class="col2 acenter">&nbsp;</div> 
-                <div class="col3 acenter"><?php echo $item->Cost; ?></div> 
-                <div class="col4 acenter">&nbsp;</div> 
-                <div class="col5 acenter">&nbsp;</div> 
+        <table id="firstdiv" class='contract_info' declar="<?php echo $item->WithDeclaration ?>">   
+            <thead class='p_cont th'>
+                <tr>
+                    <th class="col1">Договор</th>
+                    <th colspan="2" class="col2">&nbsp;</th> 
+                    <th class="col3">Сумма</th> 
+                    <th class="col4">&nbsp;</th> 
+                    <th class="col5">&nbsp;</th> 
+                </tr>
+            </thead>
+            <tbody class='p_cont'> 
+                <tr>
+                    <td class="col1 colcontr small">
+                        <span class="showplus showdate" ti="<?= $ti ?>">+</span>
+                        <?php echo $item->NameContract . " (" . $item->NameContract . ")"; ?>
+                    </td>
+                    <td colspan="2" class="col2 acenter">&nbsp;</td> 
+                    <td class="col3 acenter"><?php echo $item->Cost; ?></td> 
+                    <td class="col4 acenter">&nbsp;</td> 
+                    <td class="col5 acenter">&nbsp;</td> 
+                </tr>
+                <tr class = "hideblock" ti="<?= $ti ?>">
+                    <td colspan="6">
+                        <?php if (isset($item->Row)): ?>
+                            <?php foreach ($item->Row as $dt => $date): ?>
+                                <table class='p_cont date_info'>
+                                    <tbody>
+                                        <tr>
+                                            <td class="col1 small">
+                                                <span class="showplus showdoc" dt="<?= $dt ?>">+</span>
+                                                <?php echo $date->Date; ?>
+                                            </td>
+                                            <td colspan="2" class="col2 acenter">&nbsp;</td> 
+                                            <td class="col3 acenter"><?php echo $date->Cost; ?></td> 
+                                            <td class="col4 acenter">&nbsp;</td> 
+                                            <td class="col5 acenter">&nbsp;</td>
+                                        </tr>
+                                        <tr class="hideblock" dt="<?= $dt ?>">
+                                            <td colspan="6">
+                                                <?php if (isset($date->Row)): ?>
+                                                    <table class='p_cont  doc_info'>
+                                                        <thead class='p_cont th doc_info'>
+                                                        <th class="col1">№ Документа</th>
+                                                        <th colspan="2" class="col2">Валюта</th> 
+                                                        <th class="col3">Сума</th> 
+                                                        <th class="col4">&nbsp;</th> 
+                                                        <th class="col5">Основание</th> 
+                                                        </thead>
+                                                        <tbody class='p_cont doc_info'>
+                                                            <?php foreach ($date->Row as $dc => $doc): ?>
+                                                                <tr>
+                                                                    <td class="col1 small">
+                                                                        <span class="showplus showprod" dc="<?= $dc ?>" value = '<?= $doc->IDDocument ?>'>+</span>
+                                                                        <?php echo $doc->NumberDocument; ?>
+                                                                    </td>
+                                                                    <td colspan="2" class="col2 acenter"><?php echo $doc->Currency; ?></td> 
+                                                                    <td class="col3  acenter"><?php echo $doc->Cost; ?></td> 
+                                                                    <td class="col4  acenter">&nbsp;</td> 
+                                                                    <td class="col5 acenter"><?php echo $doc->Basis; ?></td>
+                                                                </tr>
+                                                                <tr class="hideblock mblock" dc="<?= $dc ?>">
+                                                                    <td colspan="6">
+                                                                        <div class="mblock">
+                                                                            информация загружается...
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach ?>
+                                                        </tbody>
+                                                    </table>
+                                                <?php endif ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            <?php endforeach ?> 
 
-
-                <div class="hideblock" ti="<?= $ti ?>">
-                    <?php if (isset($item->Row)): ?>
-                        <?php foreach ($item->Row as $dt => $date): ?>
-                            <div class='p_cont date_info'>
-                                <div class="col1 small">
-                                    <span class="showplus showdoc" dt="<?= $dt ?>">+</span>
-                                    <?php echo $date->Date; ?>
-                                </div>
-                                <div class="col2 acenter">&nbsp;</div> 
-                                <div class="col3 acenter"><?php echo $date->Cost; ?></div> 
-                                <div class="col4 acenter">&nbsp;</div> 
-                                <div class="col5 acenter">&nbsp;</div> 
-                                <div class="hideblock" dt="<?= $dt ?>">
-                                    <?php if (isset($date->Row)): ?>
-                                        <div class='p_cont th doc_info' >
-                                            <div class="col1"> № Документа</div>
-                                            <div class="col2">Валюта</div> 
-                                            <div class="col3">Сума</div> 
-                                            <div class="col4">&nbsp;</div> 
-                                            <div class="col5">Основание</div> 
-                                        </div>
-                                        <?php foreach ($date->Row as $dc => $doc): ?>
-                                            <div class='p_cont doc_info'>
-                                                <div class="col1 small">
-                                                    <span class="showplus showprod" dc="<?= $dc ?>" value = '<?= $doc->IDDocument ?>'>+</span>
-                                                    <?php echo $doc->NumberDocument; ?>
-                                                </div>
-                                                <div class="col2 acenter"><?php echo $doc->Currency; ?></div> 
-                                                <div class="col3 acenter"><?php echo $doc->Cost; ?></div> 
-                                                <div class="col4 acenter">&nbsp;</div> 
-                                                <div class="col5 acenter"><?php echo $doc->Basis; ?></div>
-
-
-                                                <div class="hideblock mblock" dc="<?= $dc ?>">
-                                                    информация загружается...
-                                                </div>
-
-                                            </div>
-                                        <?php endforeach ?>                        
-                                    <?php endif ?>
-                                </div>
-                            </div>
-                        <?php endforeach ?> 
-                    </div>
-                <?php endif ?>
-            </div>
-        </div>
+                        <?php endif ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     <?php endforeach ?>
 
 </div>
 <script>
+
     $(".showdate").click(function () {
         var ti = $(this).attr("ti");
-
-        $(this).parent().parent().children("div[ti=" + ti + "]").toggle(300);
+        $(this).closest("tbody").find("tr[ti=" + ti + "]").toggle(300);
         if ($(this).html() == "+") {
             $(this).html("-");
         } else {
             $(this).html("+");
         }
+
     });
     $(".showdoc").click(function () {
         var dt = $(this).attr("dt");
-        $(this).parent().parent().children("div[dt=" + dt + "]").toggle(300);
+        $(this).closest("tbody").find("tr[dt=" + dt + "]").toggle(300);
         if ($(this).html() == "+")
             $(this).html("-");
         else
             $(this).html("+");
+
     });
     $(".showprod").click(function () {
 
@@ -95,17 +113,17 @@
         var docId = $(this).attr("value");
 
         if ($(this).hasClass('downloaded')) {
-            $(this).parent().parent().children("div[dc=" + dc + "]").toggle(300);
+            $(this).closest("tbody").find("tr[dc=" + dc + "]").toggle(300);
         } else {
 
-            var debit = $(this).parent().parent().children("div.col3").text();
+            var debit = $(this).closest("tbody").find("col3").text();
             var declar = $('#firstdiv').attr("declar");
-            var tag = $(this).parent().parent().children("div[dc=" + dc + "]");
+            var tag = $(this).closest("tbody").find("tr[dc=" + dc + "]");
 
             getProducts(docId, tag, debit, declar);
 
             $(this).addClass('downloaded');
-            $(this).parent().parent().children("div[dc=" + dc + "]").toggle(300);
+            $(this).closest("tbody").find("tr[dc=" + dc + "]").toggle(300);
         }
 
         if ($(this).html() == "+")
@@ -113,7 +131,7 @@
         else
             $(this).html("+");
 
-
-
     });
 </script>
+
+

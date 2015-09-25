@@ -1,50 +1,59 @@
 <?php if (isset($products)): ?>
-    <div class='p_cont th doc_info prod_top' >
-        <div class="col1">Товар</div>
-        <div class="col2"><div class="sub1col2">К-во</div> <div class="sub2col2">Цена</div></div> 
+    <table class='p_cont doc_info prod_top' >
+        <thead class='p_cont th doc_info prod_top'>
+        <th class="col1">Товар</th>
+        <th class="sub1col2 acenter">К-во</th>
+        <th class="sub2col2 acenter">Цена</th> 
         <?php if ($debit == '0,00'): ?>
-            <div class="col3">&nbsp;</div> 
-            <div class="col4">Всего :</div> 
+            <th class="col3">&nbsp;</th> 
+            <th class="col4">Всего :</th> 
         <?php else: ?>
-            <div class="col3">Всего :</div> 
-            <div class="col4">&nbsp;</div> 
+            <th class="col3">Всего :</th> 
+            <th class="col4">&nbsp;</th> 
         <?php endif ?>
-        <div class="col5">
+        <th class="col5">
             <?php if ($declar == '1'): ?>
                 № Декларации
             <?php else: ?>
                 &nbsp;
             <?php endif ?>
-        </div> 
-    </div>
-    <?php foreach ($products as $prod): ?>
-        <div class='p_cont doc_info prod_bot'>
-            <div class="col1 small">
-
-                <span class="showplus">&nbsp;</span>
-                <span class="showspan">*</span>
-
-                <?php echo $prod->Product; ?>
-            </div>
-            <div class="col2 acenter"><div class="sub1col2"><?php echo $prod->Quantity; ?></div> <div class="sub2col2"><?php echo $prod->Price; ?></div></div> 
-            <?php if ($debit == '0,00'): ?>
-                <div class="col3 acenter">&nbsp;</div> 
-                <div class="col4 acenter"><?php echo $prod->Cost; ?></div>
-            <?php else: ?>
-                <div class="col3 acenter"><?php echo $prod->Cost; ?></div> 
-                <div class="col4 acenter">&nbsp;</div>
-            <?php endif ?>
-            <div class="col5 acenter">
-                <?php if ($declar == '1'): ?>
-                    <?php if (isset($prod->Declaration)): ?>
-                        <?php echo $prod->Declaration ?>
-                    <?php else: ?>
-                        декларация не найдена
-                    <?php endif ?>
+        </th>
+    </thead>
+    <tbody>
+        <?php foreach ($products as $prod): ?>
+            <tr>
+                <td class="col1  small">
+                    <span class="showplus">&nbsp;</span>
+                    <span class="showspan">*</span>
+                    <?php echo $prod->Product; ?>
+                </td>
+                <td class="sub1col2 acenter">
+                    <?php echo $prod->Quantity; ?>
+                </td>
+                <td class="sub2col2 acenter">
+                    <?php echo $prod->Price; ?>
+                </td>
+                <?php if ($debit == '0,00'): ?>
+                    <td class="col3 acenter">&nbsp;</td> 
+                    <td class="col4 acenter"><?php echo $prod->Cost; ?></td>
                 <?php else: ?>
-                    &nbsp;
+                    <td class="col3 acenter"><?php echo $prod->Cost; ?></td> 
+                    <td class="col4 acenter">&nbsp;</td>
                 <?php endif ?>
-            </div>
-        </div>
-    <?php endforeach; ?>
-    <?php endif ?>
+                <td class="col5 acenter">
+                    <?php if ($declar == '1'): ?>
+                        <?php if (isset($prod->Declaration)): ?>
+                            <?php echo $prod->Declaration ?>
+                        <?php else: ?>
+                            декларация не найдена
+                        <?php endif ?>
+                    <?php else: ?>
+                        &nbsp;
+                    <?php endif ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <tbody>
+    </table>
+<?php endif ?>
+

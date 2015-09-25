@@ -19,12 +19,13 @@ class IndexController extends AbstractActionController {
 
 
         try {
-            $soapClient  = $this->getServiceLocator()->get('SoapClient');
-            $oneS        = new OneSInfo($soapClient);
+            $soapClient = $this->getServiceLocator()->get('SoapClient');
+            $oneS       = new OneSInfo($soapClient);
 //            сохранить данные с 1с о пользователях
 //        $supp = $oneS->getListOfSuppliers()->return;
 //        $this->saveDBFrom1C($supp->Row);
-            $sverka      = $oneS->checkAvailabilityOfReconciliation($customer->id_1c)->return;
+            $sverka     = $oneS->checkAvailabilityOfReconciliation($customer->id_1c)->return;
+
             $listofcontr = $this->makeArray($oneS->getListOfContracts($customer->id_1c)->return->Row);
         } catch (SoapFault $s) {
             die('ERROR: [' . $s->faultcode . '] ' . $s->faultstring);
@@ -48,7 +49,6 @@ class IndexController extends AbstractActionController {
             $soapClient = $this->getServiceLocator()->get('SoapClient');
             $oneS       = new OneSInfo($soapClient);
             $result     = $oneS->getTradeLiability($this->id_1c, $start, $end, $conractId);
-
             if (isset($result->return->Row)) {
                 $trade = $this->makeArrayContracts($result->return->Row);
                 $view  = new ViewModel(array(
@@ -112,10 +112,9 @@ class IndexController extends AbstractActionController {
             $oneS       = new OneSInfo($soapClient);
             $result     = $oneS->getReturnsOfProducts($this->id_1c, $start, $end, $conractId);
 
-
             if (isset($result->return->Row)) {
                 $returns = $this->makeArrayContractsRR($result->return->Row);
-                $view     = new ViewModel(array(
+                $view    = new ViewModel(array(
                     'returns' => $returns,));
                 $view->setTemplate('info/index/returns');
                 $view->setTerminal(true);
@@ -222,6 +221,7 @@ class IndexController extends AbstractActionController {
         }
 
         $result = $this->makeArrayDate($result);
+
         $result = $this->makeArrayDoc($result);
 
         return $result;
@@ -249,12 +249,15 @@ class IndexController extends AbstractActionController {
      * @return array $result
      */
     private function makeArrayDoc($result) {
+
         foreach ($result as &$item) {
-            foreach ($item->Rows->Row as &$value) {
-                if (is_object($value->Rows->Row)) {
-                    $temp             = array();
-                    $temp[]           = $value->Rows->Row;
-                    $value->Rows->Row = $temp;
+            if (is_array($item->Rows->Row)) {
+                foreach ($item->Rows->Row as &$value) {
+                    if (is_object($value->Rows->Row)) {
+                        $temp             = array();
+                        $temp[]           = $value->Rows->Row;
+                        $value->Rows->Row = $temp;
+                    }
                 }
             }
         }
